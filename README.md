@@ -57,3 +57,24 @@ mkfs.ext4 /dev/vgSauvegarde/lvSauvegarde
 mount /dev/vgData/lvData /application
 mount /dev/vgSauvegarde/lvSauvegarde /sauvegarde
 
+## Les FileSystems /application et /sauvegarde devront être montés automatiquement au démarrage de la machine
+
+/dev/mapper/vgData-lvData /sauvegarde ext4 defaults 0 2
+/dev/mapper/vgSauvegarde-lvSauvegarde /sauvegarde ext4 defaults 0 2
+
+## Pour la partie où il faut créer un utilisateur
+
+sudo adduser admin
+
+## Mettre l'admin en tant que sudoer
+
+sudo usermod -aG sudo admin
+
+## Générer la clé SSH
+
+ssh-keygen
+
+## Aller dans /etc/sudoers/admin et ajouter :
+
+admin ALL=(ALL) NOPASSWD: /usr/bin/last -n 10
+admin ALL=(ALL) NOPASSWD: /usr/bin/tail -n 15 /var/log/syslog
